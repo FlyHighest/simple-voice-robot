@@ -1,0 +1,7 @@
+__pycache__/
+statics/*.ppn
+statics/*.mp3
+tmp*.wav
+*.swp
+config.json
+test.wav 

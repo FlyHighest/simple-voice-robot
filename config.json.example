@@ -1,0 +1,26 @@
+{
+    "sounds":{
+        "wakeup": "./statics/beep_hi.wav",
+        "endrec": "./statics/beep_lo.wav"
+    },
+    
+    "detector":{
+        "device":"USB PnP Sound Device, USB Audio",
+        "porcupine":{
+            "access_key":"porcupine access_key",
+            "keyword_paths":[
+                "./statics/porcupine_ppn_file"
+            ],
+            "model_path":"./statics/porcupine_params_zh.pv"
+        },
+        "sensitivity": 0.5
+    },
+
+    "player":{
+        "command": ["aplay","-D","sysdefault:CARD=Device"]
+    },
+
+    "recorder":{
+        "command": ["arecord","-D","sysdefault:CARD=Device"]
+    }
+}
