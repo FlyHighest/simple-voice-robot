@@ -40,6 +40,7 @@ class OpenAIBot(Robot):
             response = "抱歉，出现网络异常，再说一遍好吗"
         self.history.append({"role":"user","content":text})
         self.history.append({"role":"assistant","content":response})
+        return response
 
 
     
