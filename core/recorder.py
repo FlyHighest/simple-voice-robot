@@ -1,13 +1,9 @@
 from utils import LISTEN_STATUS
 import subprocess
-import wave 
-import os 
 import time 
-import numpy as np 
-from multiprocessing import Process,Value 
+from multiprocessing import Process 
 from utils import get_wav_volume,concat_multi_wav_files
 from collections import deque
-import shutil 
 from config import cfg 
 from core.player import Player
 
@@ -19,7 +15,17 @@ class Recorder(Process):
         self.status = status
         self.recording_proc = None 
         # Init player
-        self.player = Player(command=cfg.player.command)
+        self.player = Player()
+
+        # Detect silent thresh
+        tmp_volume_sum = 0
+        for i in range(3):
+            p = subprocess.Popen(args=self.command+["-d","1",f"tmp-detect.wav"])
+            p.wait()
+            tmp_volume_sum+=get_wav_volume("tmp-detect.wav")
+            
+        self.silent_thresh = tmp_volume_sum/3 + 10
+        print("Silent Volume Threshold",self.silent_thresh)
 
     def block_until_recorder_active(self):
         while self.status.value != LISTEN_STATUS.REC_LISTEN:
@@ -38,8 +44,9 @@ class Recorder(Process):
                 time.sleep(1) # 等待录完
                 # 判断音量
                 volume = get_wav_volume(f"tmp-{i:02d}.wav")
+                print("Volume detected",volume)
                 volume_queue.append(volume)
-                if i >= 2 and sum(volume_queue) / 3 < 10: # TODO: 程序运行时抓取安静状态下的音量
+                if i >= 2 and sum(volume_queue) / 3 < self.silent_thresh: # TODO: 程序运行时抓取安静状态下的音量
                     break 
             concat_multi_wav_files(files) # write to tmp-concat.wav
             self.status.value = LISTEN_STATUS.REC_FINISH

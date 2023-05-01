@@ -1,6 +1,7 @@
 from .enums import LISTEN_STATUS
 from .wav_utils import (concat_multi_wav_files,
-                        get_wav_volume)
+                        get_wav_volume,
+                        convert_mp3_to_wav)
                        
 import time 
 

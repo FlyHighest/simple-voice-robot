@@ -1,0 +1,9 @@
+tencentcloud-sdk-python-asr
+tencentcloud-sdk-python-common
+pvporcupine
+pvrecorder
+pydub
+wave
+numpy
+openai
+edge-tts

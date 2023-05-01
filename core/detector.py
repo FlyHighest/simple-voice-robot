@@ -35,22 +35,23 @@ class Detector(Process):
 
 
         # Init player
-        self.player = Player(command=cfg.player.command)
+        self.player = Player()
 
     def block_until_recorder_deactive(self):
-        while self.status.value not in [LISTEN_STATUS.DET_LISTEN, LISTEN_STATUS.REC_FINISH] :
+        while self.status.value not in [LISTEN_STATUS.DET_LISTEN] :
             time.sleep(0.1)  
 
     def run(self):
         # Init recorder. 如果在init里初始化recorder，start会阻塞，且没有错误提示
         audio_devices = PvRecorder.get_audio_devices()
-        print("PvRecorder detected audio devices:", audio_devices)
-        print(audio_devices.index(cfg.detector.device),len(audio_devices)-1)
+        # print("PvRecorder detected audio devices:", audio_devices)
+        # print(audio_devices.index(cfg.detector.device),len(audio_devices)-1)
         self.recorder = PvRecorder(device_index=audio_devices.index(cfg.detector.device), 
                               frame_length=self.porcupine.frame_length)
         self.recorder.start()
         try:
             while True:
+                # logger.info("detector is listening")
                 pcm = self.recorder.read()
 
                 result = self.porcupine.process(pcm)
@@ -59,13 +60,13 @@ class Detector(Process):
                     logger.info(f"Keyword {kw} Detected at time {current_time()}")
                 
                     self.recorder.stop()
-                    self.player.play(cfg.sounds.wakeup)
+                    self.player.play(cfg.sounds.wakeup, blocking=True)
                     self.status.value = LISTEN_STATUS.REC_LISTEN
                     # 阻塞程序直到主动聆听状态结束
                     self.block_until_recorder_deactive()
 
                     self.recorder.start()
-                    logger.info("Back to listen status")
+                    
 
         except pvporcupine.PorcupineActivationError as e:
             logger.error("[Porcupine] AccessKey activation error", stack_info=True)

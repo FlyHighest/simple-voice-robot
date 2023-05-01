@@ -1,6 +1,22 @@
 import wave,os
 import numpy as np 
-import math 
+from pydub import AudioSegment
+
+def convert_mp3_to_wav(mp3_path):
+    """
+    将 mp3 文件转成 wav
+
+    :param mp3_path: mp3 文件路径
+    :returns: wav 文件路径
+    """
+    target = mp3_path.replace(".mp3", ".wav")
+    if not os.path.exists(mp3_path):
+        print("convert to wav error")
+        # logger.critical(f"文件错误 {mp3_path}", stack_info=True)
+        return None
+    AudioSegment.from_mp3(mp3_path).export(target, format="wav")
+    return target
+
 def concat_multi_wav_files(files):
     # 打开所有的wav文件
     wave_files = []

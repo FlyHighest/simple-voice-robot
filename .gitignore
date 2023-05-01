@@ -2,6 +2,7 @@ __pycache__/
 statics/*.ppn
 statics/*.mp3
 tmp*.wav
+test*.wav
 *.swp
 config.json
-test.wav 
+*.mp3
