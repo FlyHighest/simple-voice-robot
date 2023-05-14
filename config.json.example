@@ -23,4 +23,16 @@
     "recorder":{
         "command": ["arecord","-D","sysdefault:CARD=Device"]
     }
+
+    "api":{
+        "tencent_secret_id": "xxx",
+        "tencent_secret_key": "xx",
+        "openai_key":"sk-xx",
+        "openai_base":"https://api.xx/v1",
+        "qweather_key": "xxx"
+    },
+
+    "settings":{
+        "location":"116.48,39.92"
+    }
 }

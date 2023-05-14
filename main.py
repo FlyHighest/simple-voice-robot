@@ -34,6 +34,5 @@ if __name__ == "__main__":
         tts.text_to_speech(response_text)
         listen_status.value = LISTEN_STATUS.DET_LISTEN
 
-    # 模块3: 回复播放
 
 

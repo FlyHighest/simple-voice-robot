@@ -7,3 +7,5 @@ wave
 numpy
 openai
 edge-tts
+hanlp[full]
+httpx

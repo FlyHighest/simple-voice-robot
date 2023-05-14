@@ -38,8 +38,9 @@ class Detector(Process):
         self.player = Player()
 
     def block_until_recorder_deactive(self):
-        while self.status.value not in [LISTEN_STATUS.DET_LISTEN] :
+        while self.status.value != LISTEN_STATUS.DET_LISTEN:
             time.sleep(0.1)  
+        logger.info("Detector back to work")
 
     def run(self):
         # Init recorder. 如果在init里初始化recorder，start会阻塞，且没有错误提示

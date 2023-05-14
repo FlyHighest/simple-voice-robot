@@ -8,6 +8,7 @@ openai.api_key = cfg.api.openai_key
 openai.api_base = cfg.api.openai_base
 
 def generate_response(text, history, q):
+    print(history)
     res = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
@@ -25,9 +26,11 @@ def generate_response(text, history, q):
     
 
 class OpenAIBot(Robot):
+    history = deque(maxlen=4) # 最多保存2轮对话作为上下文
+
     def __init__(self) -> None:
         super().__init__()
-        self.history = deque(maxlen=12) # 最多保存6轮对话作为上下文
+
 
 
     def reply(self,text):
@@ -36,10 +39,11 @@ class OpenAIBot(Robot):
         p.start()
         try:
             response = q.get(timeout=10)
+            self.history.append({"role":"user","content":text})
+            self.history.append({"role":"assistant","content":response})
         except Exception as e:
             response = "抱歉，出现网络异常，再说一遍好吗"
-        self.history.append({"role":"user","content":text})
-        self.history.append({"role":"assistant","content":response})
+
         return response
 
 

@@ -31,6 +31,6 @@ class EdgeTTS:
         tmpfile = event_loop.run_until_complete(self.async_get_speech(phrase))
         event_loop.close()
         convert_mp3_to_wav("tmp-tts.mp3") 
-        self.player.play("tmp-tts.wav")
+        self.player.play("tmp-tts.wav",blocking=True)
         # return tmpfile
 

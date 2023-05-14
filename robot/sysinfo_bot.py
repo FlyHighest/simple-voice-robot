@@ -31,6 +31,6 @@ class SysInfoBot(Robot):
             localtime = time.localtime()
             response += f"系统时间是{localtime.tm_hour}点{localtime.tm_min}分。"
         if "CPU温度" in text:
-            response += f"CPU温度为{int(open('/sys/class/thermal/thermal_zone0/temp').read().strip())//100}度"
+            response += f"CPU温度为{int(open('/sys/class/thermal/thermal_zone0/temp').read().strip())//1000}度"
         return response
         
